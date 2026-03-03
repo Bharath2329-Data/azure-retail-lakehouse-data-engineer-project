@@ -125,36 +125,97 @@ No schema enforcement
 
 Immutable storage
 
- ## Data Validation Performed
+## Day 3 — Azure Data Factory Setup & Bronze Integration
+# Goal
 
-Using Databricks:
+Establish Azure Data Factory (ADF) to orchestrate data ingestion from Azure Data Lake Storage Gen2 (ADLS) Bronze layer.
 
-Loaded CSV files from Bronze
+This step introduces orchestration and enterprise-grade data pipeline design.
 
-Verified schema structure
+# Architecture (Updated)
 
-Checked row counts
+Retail CSV Files
+⬇
+Azure Data Lake (Bronze Layer)
+⬇
+Azure Data Factory (Orchestration Layer)
 
-Validated relational integrity between:
+# Azure Resources Created
+1️⃣ Azure Data Factory (V2)
 
-orders and order_items
+Name: adf-retail-lakehouse
 
-orders and payments
+Resource Group: rg-retail-lakehouse-bharath
 
-Performed null checks
+Region: Same as ADLS
 
-This ensures source data quality before transformation.
+System Assigned Managed Identity: Enabled
 
-🛠 Technologies Used
+# Role-Based Access Control (RBAC)
 
-Azure Data Lake Storage Gen2
+To allow ADF to access ADLS securely:
 
-Azure Portal
+Assigned Role: Storage Blob Data Contributor
 
-Databricks (PySpark)
+Assigned To: Azure Data Factory Managed Identity
 
-GitHub
+This enables secure, password-less authentication using Azure RBAC.
 
-PowerShell (Git version control)
+# Linked Service Configuration
+
+Created Linked Service:
+
+Name: LS_ADLS_RETAIL
+
+Type: Azure Data Lake Storage Gen2
+
+Authentication: Managed Identity
+
+Connection Test: Successful
+
+This establishes secure connectivity between ADF and ADLS.
+
+# Datasets Created (Bronze Layer)
+
+The following datasets were configured in ADF:
+
+Dataset Name	Source Path
+DS_Bronze_Customers_CSV	bronze/raw/customers/customers.csv
+DS_Bronze_Products_CSV	bronze/raw/products/products.csv
+DS_Bronze_Stores_CSV	bronze/raw/stores/stores.csv
+DS_Bronze_Orders_CSV	bronze/raw/orders/orders.csv
+DS_Bronze_OrderItems_CSV	bronze/raw/order_items/order_items.csv
+DS_Bronze_Payments_CSV	bronze/raw/payments/payments.csv
+
+Each dataset:
+
+Uses DelimitedText format
+
+Reads from ADLS Gen2
+
+Schema imported from source
+
+Header row enabled
+
+🛠 What This Demonstrates
+
+✔ Azure Data Factory configuration
+✔ Managed Identity authentication
+✔ Secure RBAC role assignment
+✔ Enterprise data connectivity
+✔ Dataset design for structured ingestion
+
+This step transitions the project from static storage to orchestrated data engineering.
+
+# ADF Configuration Exported
+
+ADF ARM Template exported and stored in repository:
+
+adf/arm_template/
+  ARMTemplateForFactory.json
+  ARMTemplateParametersForFactory.json
+
+This enables Infrastructure-as-Code capability and reproducibility.
+
 
 
