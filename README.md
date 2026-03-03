@@ -10,7 +10,7 @@ Build an end-to-end retail analytics lakehouse using Azure cloud services.
 - Bronze / Silver / Gold architecture (Medallion Architecture)
 
 ## Status
-## Day 1: Environment setup complete
+# Day 1: Environment setup complete
 ## Objective
 
 Establish a secure, cost-optimized Azure foundation for building a scalable Retail Lakehouse architecture.
@@ -43,7 +43,7 @@ logs → Pipeline and operational logs
 
 This structure enables scalable and modular data processing following industry-standard lakehouse patterns.
 
-## Cost Optimization Strategy
+### Cost Optimization Strategy
 
 To ensure the project stays under a $20 budget:
 
@@ -59,7 +59,7 @@ az group delete --name rg-retail-lakehouse-dev
 
 This ensures full environment cleanup to prevent unexpected charges.
 
-## Security & Governance (Foundation)
+### Security & Governance (Foundation)
 
 Storage account secured via Azure RBAC
 
@@ -67,7 +67,7 @@ Public access disabled where possible
 
 Designed to integrate with Managed Identity and Key Vault in future phases
 
-## Git Version Control
+### Git Version Control
 
 Initialized Git repository
 
@@ -78,7 +78,7 @@ Added initial README and documentation skeleton
 Committed environment setup changes
 
 
-## Day 2 — Retail Data Ingestion (Bronze Layer)
+# Day 2 — Retail Data Ingestion (Bronze Layer)
 
 Create realistic retail datasets and upload them into the Azure Data Lake Bronze layer as raw source data.
 
@@ -94,7 +94,7 @@ Bronze Layer (Raw Data)
 
 The following retail datasets were generated:
 
-## Dataset	Description
+### Dataset	Description
 customers	Customer master data with loyalty tier
 products	Product catalog with categories and pricing
 stores	Store location details
@@ -105,7 +105,7 @@ payments	Payment details per order
 All datasets are stored locally under:
 
 data/sample_raw/
-## ☁ Bronze Layer Structure (ADLS)
+###  Bronze Layer Structure (ADLS)
 
 Uploaded to Azure Data Lake:
 
@@ -125,14 +125,14 @@ No schema enforcement
 
 Immutable storage
 
-## Day 3 — Azure Data Factory Setup & Bronze Integration
-# Goal
+# Day 3 — Azure Data Factory Setup & Bronze Integration
+## Goal
 
 Establish Azure Data Factory (ADF) to orchestrate data ingestion from Azure Data Lake Storage Gen2 (ADLS) Bronze layer.
 
 This step introduces orchestration and enterprise-grade data pipeline design.
 
-# Architecture (Updated)
+### Architecture (Updated)
 
 Retail CSV Files
 ⬇
@@ -140,7 +140,7 @@ Azure Data Lake (Bronze Layer)
 ⬇
 Azure Data Factory (Orchestration Layer)
 
-# Azure Resources Created
+### Azure Resources Created
 1️⃣ Azure Data Factory (V2)
 
 Name: adf-retail-lakehouse
@@ -151,7 +151,7 @@ Region: Same as ADLS
 
 System Assigned Managed Identity: Enabled
 
-# Role-Based Access Control (RBAC)
+### Role-Based Access Control (RBAC)
 
 To allow ADF to access ADLS securely:
 
@@ -161,7 +161,7 @@ Assigned To: Azure Data Factory Managed Identity
 
 This enables secure, password-less authentication using Azure RBAC.
 
-# Linked Service Configuration
+### Linked Service Configuration
 
 Created Linked Service:
 
@@ -175,7 +175,7 @@ Connection Test: Successful
 
 This establishes secure connectivity between ADF and ADLS.
 
-# Datasets Created (Bronze Layer)
+### Datasets Created (Bronze Layer)
 
 The following datasets were configured in ADF:
 
@@ -197,7 +197,7 @@ Schema imported from source
 
 Header row enabled
 
-🛠 What This Demonstrates
+ What This Demonstrates
 
 ✔ Azure Data Factory configuration
 ✔ Managed Identity authentication
@@ -207,7 +207,7 @@ Header row enabled
 
 This step transitions the project from static storage to orchestrated data engineering.
 
-# ADF Configuration Exported
+### ADF Configuration Exported
 
 ADF ARM Template exported and stored in repository:
 
@@ -216,6 +216,7 @@ adf/arm_template/
   ARMTemplateParametersForFactory.json
 
 This enables Infrastructure-as-Code capability and reproducibility.
+
 
 
 
