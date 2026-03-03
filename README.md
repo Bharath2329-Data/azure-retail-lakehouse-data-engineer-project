@@ -217,6 +217,88 @@ adf/arm_template/
 
 This enables Infrastructure-as-Code capability and reproducibility.
 
+# Day 4 — Parameterized ADF Pipeline (Reusable Bronze Ingestion)
+🎯 Goal
+
+Build a reusable Azure Data Factory (ADF) ingestion pattern using a single parameterized Copy pipeline to load any retail CSV file into the Bronze (raw) layer.
+
+This implements an enterprise-style approach: build once, reuse for all datasets.
+
+## Architecture (Updated)
+
+Retail CSV Files
+⬇
+ADF Parameterized Pipeline (Copy Activity)
+⬇
+ADLS Gen2 — Bronze Layer (Raw)
+
+## What Was Built
+### 1️) Parameterized Datasets (Source + Sink)
+
+Created two ADLS Gen2 DelimitedText datasets with dynamic path support:
+
+DS_ADLS_CSV_SRC_PARAM
+
+DS_ADLS_CSV_SINK_PARAM
+
+Each dataset uses parameters:
+
+pContainer
+
+pFolder
+
+pFileName
+
+This allows reading/writing files without creating separate datasets per table.
+
+### 2️) Reusable Pipeline
+
+Created a parameterized pipeline:
+
+PL_CopyToBronze_Parameterized
+
+Pipeline parameters:
+
+pContainer (example: bronze)
+
+pSourceFolder (example: raw/customers)
+
+pFileName (example: customers.csv)
+
+pTargetFolder (example: raw/customers)
+
+Copy Activity:
+
+Copy_CSV_To_Bronze
+
+This pipeline supports ingestion for all retail datasets by changing parameter values.
+
+### Validation Performed
+
+Executed a Debug run for customers.csv
+
+Confirmed successful copy execution in ADF Monitor
+
+Verified file presence/updates in ADLS Bronze folder
+
+### ADF Configuration Saved to Git
+
+Exported ADF ARM template to track configuration in source control:
+
+adf/arm_template/
+  ARMTemplateForFactory.json
+  ARMTemplateParametersForFactory.json
+### Technologies Used
+
+Azure Data Factory (Copy Activity, Parameterization)
+
+ADLS Gen2 (Bronze Layer)
+
+Managed Identity (RBAC)
+
+GitHub + PowerShell
+
+
 
 
 
