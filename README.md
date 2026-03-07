@@ -336,7 +336,7 @@ Databricks was connected to Azure Data Lake Storage Gen2 using OAuth authenticat
 Bronze and Silver storage paths:
 
 Bronze Path
-abfss://bronze@retaillakehousebharath.dfs.core.windows.net/raw/
+abfss://bronze@retaillakehousebharath.dfs.core.windows.net/
 
 Silver Path
 abfss://silver@retaillakehousebharath.dfs.core.windows.net/clean/
@@ -408,6 +408,7 @@ Data preview validated in Databricks notebook
 • Azure Data Lake Storage Gen2
 • Azure Data Factory
 • GitHub
+
 
 
 
