@@ -298,6 +298,117 @@ Managed Identity (RBAC)
 
 GitHub + PowerShell
 
+# Day 5 — Bronze to Silver Transformation (Azure Databricks + Delta Lake)
+### Goal
+
+Transform raw retail data from the Bronze layer into a cleaned and structured Silver layer using Azure Databricks and PySpark.
+
+The Silver layer applies basic data engineering transformations to prepare the data for analytics.
+
+### Architecture (Updated)
+
+Retail CSV Files
+⬇
+Azure Data Factory (Ingestion Pipeline)
+⬇
+Azure Data Lake Storage — Bronze (Raw Data)
+⬇
+Azure Databricks (PySpark Transformations)
+⬇
+Azure Data Lake Storage — Silver (Clean Delta Tables)
+
+## Azure Databricks Setup
+
+A minimal-cost Databricks cluster was created for data processing.
+
+Setting	Value
+Cluster Name	retail-cluster
+Runtime	Databricks Runtime LTS
+Worker Nodes	1
+Auto Termination	15 minutes
+
+Auto-termination ensures compute costs remain minimal.
+
+## Databricks to ADLS Integration
+
+Databricks was connected to Azure Data Lake Storage Gen2 using OAuth authentication.
+
+Bronze and Silver storage paths:
+
+Bronze Path
+abfss://bronze@retaillakehousebharath.dfs.core.windows.net/raw/
+
+Silver Path
+abfss://silver@retaillakehousebharath.dfs.core.windows.net/clean/
+### Datasets Processed
+
+The following Bronze datasets were transformed:
+
+Dataset	Description
+customers	Customer information and loyalty tiers
+products	Product catalog and pricing
+stores	Store location details
+orders	Order transactions
+order_items	Product line items per order
+payments	Payment details for orders
+#### Transformations Applied
+
+Basic data engineering transformations were implemented:
+
+• Removed duplicate records
+• Converted date columns to proper date format
+• Cast numeric fields to correct data types
+• Added ingestion timestamp (ingest_ts)
+• Standardized schema structure
+
+Example transformation:
+
+customers_silver = (
+customers_df
+.dropDuplicates(["customer_id"])
+.withColumn("signup_date", to_date("signup_date"))
+.withColumn("ingest_ts", current_timestamp())
+)
+### Silver Layer Storage (Delta Format)
+
+Processed datasets were written as Delta tables into the Silver layer.
+
+silver/clean/customers
+silver/clean/products
+silver/clean/stores
+silver/clean/orders
+silver/clean/order_items
+silver/clean/payments
+
+Using Delta Lake provides:
+
+ACID transactions
+
+Schema enforcement
+
+Faster queries
+
+Reliable data versioning
+
+### Data Validation
+
+After transformations:
+
+Row counts were verified
+
+Schema structure confirmed
+
+Data preview validated in Databricks notebook
+
+### Technologies Used
+
+• Azure Databricks
+• PySpark
+• Delta Lake
+• Azure Data Lake Storage Gen2
+• Azure Data Factory
+• GitHub
+
 
 
 
