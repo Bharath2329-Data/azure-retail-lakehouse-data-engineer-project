@@ -505,6 +505,164 @@ These insights can easily feed Power BI dashboards or analytics tools.
 • Azure Data Factory
 • GitHub
 
+# Day 7: Data Quality Checks
+
+### Objective
+
+Implemented data quality validations in Azure Databricks to ensure reliability of the Silver and Gold layers in the retail lakehouse architecture.
+
+These validations help detect missing keys, duplicate records, invalid numeric values, broken relationships between tables, and business rule inconsistencies before the data is used for reporting and analytics.
+
+---
+
+### Architecture with Data Quality Layer
+
+```
+CSV Data
+   ↓
+Azure Data Factory
+   ↓
+Bronze Layer (Raw Data)
+   ↓
+Databricks Processing
+   ↓
+Silver Layer (Clean Delta Tables)
+   ↓
+Data Quality Validation
+   ↓
+Gold Layer (Analytics Tables)
+```
+
+---
+
+### Data Quality Checks Implemented
+
+#### 1. Null Checks
+
+Validated that critical identifier columns contain no null values:
+
+* `customers.customer_id`
+* `products.product_id`
+* `stores.store_id`
+* `orders.order_id`
+* `order_items.order_item_id`
+* `payments.payment_id`
+
+---
+
+#### 2. Duplicate Checks
+
+Validated that primary keys remain unique across all tables:
+
+* `customer_id`
+* `product_id`
+* `store_id`
+* `order_id`
+* `order_item_id`
+* `payment_id`
+
+---
+
+#### 3. Numeric & Range Validation
+
+Validated business logic rules for numeric fields:
+
+* `quantity > 0`
+* `unit_price >= 0`
+* `discount_pct between 0 and 1`
+* `payment amount >= 0`
+
+Safe casting (`try_cast`) was used for the `payments.amount` column because the field is stored as a string and may contain non-numeric values.
+
+---
+
+#### 4. Referential Integrity Checks
+
+Ensured relationships between tables are valid:
+
+* `order_items.order_id` exists in `orders`
+* `payments.order_id` exists in `orders`
+* `orders.customer_id` exists in `customers`
+* `orders.store_id` exists in `stores`
+* `order_items.product_id` exists in `products`
+
+---
+
+#### 5. Business Rule Validation
+
+Validated operational consistency:
+
+Completed orders should have corresponding payment records.
+
+```
+Completed Orders → Must have Payment
+```
+
+---
+
+### Data Quality Summary Table
+
+All validation results were aggregated into a summary table:
+
+| check_name                        | failed_records |
+| --------------------------------- | -------------- |
+| null_customer_id                  | 0              |
+| duplicate_order_id                | 0              |
+| invalid_quantity                  | 0              |
+| invalid_order_items_orders        | 0              |
+| completed_orders_without_payments | 0              |
+
+This provides a clear overview of pipeline health.
+
+---
+
+### Data Quality Results Storage
+
+Validation results were optionally written to ADLS Gen2 as a Delta table:
+
+```
+gold/marts/data_quality_results
+```
+
+This enables monitoring of data quality over time.
+
+---
+
+### Technologies Used
+
+* Azure Databricks
+* PySpark
+* Delta Lake
+* Azure Data Lake Storage Gen2
+
+---
+
+### Key Learning
+
+This step demonstrates how to integrate **data quality validation into a modern lakehouse pipeline**. Ensuring data integrity before analytics prevents incorrect reporting and improves trust in downstream dashboards.
+
+---
+
+### Files Added
+
+```
+notebooks/data_quality/day7_data_quality_checks.py
+screenshots/day7-dq-summary.png
+screenshots/day7-null-checks.png
+screenshots/day7-referential-integrity.png
+```
+
+---
+
+### Git Commit
+
+```
+git add .
+git commit -m "day7: add data quality checks for silver and gold layers"
+git push
+```
+
+
 
 
 
