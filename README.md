@@ -662,6 +662,75 @@ git commit -m "day7: add data quality checks for silver and gold layers"
 git push
 ```
 
+# Day 8 — CI/CD Automation with GitHub Actions
+### Goal
+
+Implement Continuous Integration (CI) using GitHub Actions to automatically validate the project whenever code is pushed to the repository.
+
+This step introduces DevOps automation into the data engineering workflow.
+
+## CI/CD Architecture
+Developer Code Changes
+        ↓
+Git Push to GitHub
+        ↓
+GitHub Actions Workflow
+        ↓
+Automated Project Validation
+        ↓
+Quality Assurance for Data Engineering Project
+
+This ensures the project maintains consistent structure and code quality.
+
+### GitHub Actions Workflow
+
+A GitHub workflow was created to run automatically on:
+
+push events
+
+pull_request events
+
+Workflow file location:
+
+.github/workflows/ci.yml
+### CI Validation Steps
+
+The CI pipeline performs the following automated checks:
+
+• Verifies repository structure
+• Ensures required folders exist
+• Validates Python script syntax
+• Confirms README documentation is present
+
+Example workflow step:
+
+- name: Validate repository structure
+  run: python scripts/project_validation.py
+### Project Validation Script
+
+A lightweight validation script was created to check required project components.
+
+Location:
+
+scripts/project_validation.py
+
+The script verifies that the following folders and files exist:
+
+README.md
+docs/
+data/
+notebooks/
+adf/
+screenshots/
+
+This ensures the repository structure remains consistent as the project evolves.
+
+### Technologies Used
+
+• GitHub Actions
+• YAML Workflow Configuration
+• Python Validation Script
+• Git Version Control
 
 
 
