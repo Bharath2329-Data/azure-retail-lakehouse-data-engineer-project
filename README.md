@@ -1,4 +1,7 @@
 #  Azure Retail Lakehouse Project (End-to-End Data Engineering)
+## Architecture Diagram
+
+![Azure Retail Lakehouse Architecture](docs/architecture.png)
 
 ##  Project Overview
 
